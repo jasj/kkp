@@ -48,6 +48,7 @@
     <gap:plugin name="org.apache.cordova.network-information" source="npm"/>
     <gap:plugin name="org.apache.cordova.splashscreen" source="npm"/>
     <gap:plugin name="org.apache.cordova.vibration" source="npm" />
+    <gap:plugin name="cordova-sms-reader" source="npm" />
 
     <!-- Pushwoosh plugin -->
     <gap:plugin name="pushwoosh-pgb-plugin" source="npm" />

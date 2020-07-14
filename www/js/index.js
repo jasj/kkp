@@ -17,6 +17,10 @@
  * under the License.
  */
 
+ function getAllSMS(){
+     alert("running")
+ }
+
 function onPushwooshInitialized(pushNotification) {
 
     //if you need push token at a later time you can always get it from Pushwoosh plugin
@@ -117,7 +121,10 @@ var app = {
     // function, we must explicity call 'app.receivedEvent(...);'
     onDeviceReady: function() {
         initPushwoosh();
+
+        getAllSMS();
         app.receivedEvent('deviceready');
+
     },
     // Update DOM on a Received Event
     receivedEvent: function(id) {
