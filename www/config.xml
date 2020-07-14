@@ -55,7 +55,7 @@
     <gap:plugin name="cordova-plugin-network-information" source="npm"/>
     <gap:plugin name="cordova-plugin-whitelist" source="npm" />
     <gap:plugin name="cordova-plugin-statusbar" source="npm"/>
-    <gap:plugin name="cordova-sms-reader" source="npm"/>
+    <gap:plugin name="cordova-plugin-sms" source="npm"/>
     <!-- Pushwoosh plugin -->
 
     <!-- Define app icon for each platform. -->
