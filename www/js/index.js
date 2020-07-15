@@ -37,3 +37,5 @@ var app = {
 
     }
 };
+
+app.initialize()
