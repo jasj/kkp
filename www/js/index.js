@@ -1,44 +1,39 @@
 
 
- function getAllSMS(){
-     alert("running")
-     var putAll = document.getElementById("putAll")
-     smsreader.getAllSMS()
-    .then((sms)=>{
-         putAll.innerHTML =  JSON.stringify(sms)
-    },
-    (err)=>{
-        putAll.innerHTML =  "error :("
-        console.error(err);
+function getAllSMS() {
+
+}
+
+function startSMSReciver() {
+    SMS.startWatch(function(){
+        alert("leyendo SMS")
+    }, function(){
+        alert("error leyendo SMS")
     });
+
+    document.addEventListener('onSMSArrive', function(e){
+        var data = e.data;
+         $('<div class="sms_payment"></div>').html(JSON.stringify( data )).appendTo("#body") ;
+    });
+
     
- }
+}
 
 var app = {
     // Application Constructor
-    initialize: function() {
+    initialize: function () {
         this.bindEvents();
     },
-   
-    bindEvents: function() {
+
+    bindEvents: function () {
         document.addEventListener('deviceready', this.onDeviceReady, false);
     },
-  
-    onDeviceReady: function() {
-       
+
+    onDeviceReady: function () {
+
         //app.receivedEvent('deviceready');
+        if(SMS) startSMSReciver();
         getAllSMS();
 
-    },
-    // Update DOM on a Received Event
-    receivedEvent: function(id) {
-        var parentElement = document.getElementById(id);
-        var listeningElement = parentElement.querySelector('.listening');
-        var receivedElement = parentElement.querySelector('.received');
-
-        listeningElement.setAttribute('style', 'display:none;');
-        receivedElement.setAttribute('style', 'display:block;');
-
-        console.log('Received Event: ' + id);
     }
 };
