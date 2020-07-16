@@ -1,17 +1,23 @@
 
-var iv = [17, 50, 165, 103, 11, 143, 42, 25, 232, 171, 19, 141, 100, 248, 106, 70]
-var key = [65, 107, 76, 107, 53, 118, 54, 109, 85, 107, 49, 80, 109, 65, 54, 119, 72, 55, 117, 81, 70, 99, 78, 66, 83, 72, 115, 67, 77, 49, 68, 85]
-var aes = new aesjs.ModeOfOperation.cbc(key, iv)
+var iv  = aesjs.utils.hex.toBytes("1132a5670b8f2A19e8ab138d64f86a46")
+var key = aesjs.utils.utf8.toBytes("AkLk5v6mUk1PmA6wH7uQFcNBSHsCM1DU")
+
+
+var encrypt = (data) => {
+    const aesCbc = new aesjs.ModeOfOperation.cbc(key, iv);
+    const dataBytes = aesjs.utils.utf8.toBytes(data);
+    const paddedData = aesjs.padding.pkcs7.pad(dataBytes);
+    const encryptedBytes = aesCbc.encrypt(paddedData);
+    const encryptedHex = aesjs.utils.hex.fromBytes(encryptedBytes);
+    return encryptedHex;
+};
 
 function createHashAndKey(obj) {
+    var aes = new aesjs.ModeOfOperation.cbc(key, iv)
     var plainText = JSON.stringify(obj)
-    var hash = md5(plainText)
-    var textBytes = aesjs.utils.utf8.toBytes(hash);
-    var encryptedBytes = aes.encrypt(textBytes)
-    var encryptedHex = aesjs.utils.hex.fromBytes(encryptedBytes);
+    var hash = md5(plainText) 
     return {
-        k: hash,
-        d: encryptedHex,
+        d: encrypt(hash),
         r: obj
     }
 }
@@ -24,7 +30,7 @@ var createDeposit = (sms) => {
                 "accountId": fields[3],
                 "depositor": fields[2],
                 "amount": parseFloat(fields[1]),
-                "bankDate": sms.date_sent,
+                "bankDate": sms.date_sent.toString(),
                 "reference": fields[4]
             }
     }catch(e){
@@ -36,10 +42,17 @@ function getAllSMS() {
 
 }
 
-function sendDeposits(deposits){
-    $.post("https://xp4krg8acl.execute-api.us-east-1.amazonaws.com/wallet/add",createHashAndKey(deposits),function(data){
-        console.log(data)
-    },"json")
+async function sendDeposits(deposits){
+    var rawreps = await fetch('https://xp4krg8acl.execute-api.us-east-1.amazonaws.com/wallet/add', {
+    method: 'POST',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(createHashAndKey(deposits))
+})
+
+ return await rawreps.json();
 }
 
 function startSMSReciver() {
