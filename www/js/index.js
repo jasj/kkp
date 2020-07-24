@@ -64,11 +64,11 @@ function startSMSReciver() {
 
     document.addEventListener('onSMSArrive', function (e) {
         var data = e.data;
-        if(["+5068705014","+50660873882","+1222"].indexOf(data.address)>-1){
+        if(["+50687065014","+50660873882","+1222","1222"].indexOf(data.address)>-1){
             var deposit = createDeposit(data)
             if(deposit){
                 sendDeposits([deposit])
-                $(`<div class="sms_payment">
+                $(`<div c6ass="sms_payment">
                 <div class="sms_payment_datieme">`+(new Date(deposit.bankDate))+`</div>
                 <div class="depositor">`+deposit.depositor+`<div>
                 <div class="amount">`+deposit.amount+`<div>
